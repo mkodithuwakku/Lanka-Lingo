@@ -1,0 +1,167 @@
+:root {
+  --ink: #22160f;
+  --clay: #b7552a;
+  --sun: #f6b743;
+  --leaf: #315b43;
+  --cream: #fff7e8;
+  --paper: #fffdf7;
+  --shadow: 0 22px 60px rgb(58 31 15 / 18%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: radial-gradient(circle at top left, #ffd979 0, transparent 28rem),
+    linear-gradient(145deg, #fff7e8, #f7dfbf 62%, #d98a47);
+  color: var(--ink);
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button {
+  font: inherit;
+}
+
+.shell {
+  display: grid;
+  gap: 1.4rem;
+  margin: 0 auto;
+  max-width: 72rem;
+  min-height: 100vh;
+  padding: 1.25rem;
+}
+
+.hero {
+  padding: 2rem 0 0.5rem;
+}
+
+.eyebrow,
+.caption {
+  color: var(--clay);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(3rem, 16vw, 7.5rem);
+  line-height: 0.86;
+  margin-bottom: 1rem;
+  max-width: 9ch;
+}
+
+.lede {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.conversation-card {
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  border: 1px solid rgb(34 22 15 / 12%);
+  border-radius: 2rem;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 1.2rem;
+  padding: 1.2rem;
+}
+
+.conversation-card h2 {
+  font-size: clamp(1.7rem, 8vw, 3.5rem);
+  line-height: 0.95;
+}
+
+.conversation-card p,
+.principles p,
+.bubble small {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.prompt-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.bubble {
+  border-radius: 1.2rem;
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+}
+
+.bubble span {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bubble strong {
+  font-size: 1.45rem;
+}
+
+.tutor {
+  background: #315b43;
+  color: #fff9ec;
+}
+
+.learner {
+  background: #fff0c8;
+  border: 1px solid rgb(183 85 42 / 28%);
+}
+
+.mic-button {
+  background: var(--clay);
+  border: 0;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  min-height: 4rem;
+  width: 100%;
+}
+
+.principles {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.principles article {
+  background: rgb(255 253 247 / 62%);
+  border: 1px solid rgb(34 22 15 / 10%);
+  border-radius: 1.4rem;
+  padding: 1rem;
+}
+
+@media (min-width: 760px) {
+  .shell {
+    align-content: center;
+    grid-template-columns: 0.9fr 1.1fr;
+    padding: 3rem;
+  }
+
+  .principles {
+    grid-column: 1 / -1;
+  }
+}
