@@ -2,7 +2,7 @@
   "name": "lanka-lingo",
   "version": "0.1.0",
   "private": true,
-  "description": "Mobile-first conversational Sinhala learning app with AI tutor scaffolding.",
+  "description": "Local-first personal Sinhala conversation and pronunciation practice tool.",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -10,20 +10,22 @@
     "start": "next start",
     "test": "node --test tests/**/*.test.ts",
     "test:watch": "node --test --watch tests/**/*.test.ts",
-    "check": "node --check src/services/conversationEngine.ts"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
-    "microsoft-cognitiveservices-speech-sdk": "^1.43.0",
-    "next": "^15.3.0",
-    "openai": "^4.96.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "next": "^16.2.10",
+    "openai": "^6.48.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "typescript": "^5.8.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   },
   "engines": {
     "node": ">=23.6.0"

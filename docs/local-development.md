@@ -1,113 +1,69 @@
 # Local Development
 
-This guide explains how to run the Lanka Lingo project locally.
+## Free Practice Setup
 
-## Current Project State
+Requirements: Node.js 23.6 or newer, npm, and Chrome for microphone recognition.
 
-The project currently has two runnable layers:
-
-- Acceptance/domain test suite: runs now with Node's built-in test runner and does not require provider credentials.
-- Mobile-first Next.js/PWA shell: requires installing npm dependencies before it can run locally.
-
-Live Azure Speech and OpenAI conversation calls are not implemented yet. Provider interfaces exist so those integrations can be added safely later without changing the learning-loop tests.
-
-## Requirements
-
-- Node.js `23.6.0` or newer.
-- npm.
-- No Azure or OpenAI credentials are required for the current test suite.
-
-Check Node:
-
-```bash
-node --version
-```
-
-## Install Dependencies
-
-From the project root:
+From the repository directory (the inner `Lanka-Lingo` folder):
 
 ```bash
 npm install
-```
-
-This installs Next.js, React, TypeScript, OpenAI SDK, and Azure Speech SDK dependencies declared in `package.json`.
-
-## Run Tests
-
-```bash
-npm test
-```
-
-Expected result:
-
-- 15 acceptance/domain tests pass.
-- No network calls are made.
-- No provider credentials are required.
-
-The tests cover onboarding, romanized Sinhala suggestions, pronunciation heuristics, progress, session review, privacy defaults, scenario content, and the multiple-Sinhala-speaker review gate.
-
-## Run The Web/PWA Shell
-
-After installing dependencies:
-
-```bash
 npm run dev
 ```
 
-Then open:
+Open http://localhost:3000. No environment file or provider account is required.
 
-```text
-http://localhost:3000
-```
+`ENABLE_PAID_SERVICES` defaults to disabled. Even if OpenAI or Azure keys exist in the shell, they do not enable provider calls unless this flag is exactly `true`. Free conversation and phrase lookup run directly in the browser. Browser speech recognition may still use the browser vendor's servers; free does not mean fully offline.
 
-The current UI is a mobile-first landing/conversation scaffold. It is not yet wired to live microphone recording, Azure Speech, or OpenAI tutor responses.
+## First Practice Session
 
-## Build The App
+- Choose a topic and answer three saved questions by voice or text. Suggested replies can be selected, practiced, and sent.
+- Open English help and search the phrase library. It includes eight essentials and thirty topic replies. Select a sentence or enter its English meaning.
+- Return to Sinhala: the current question and conversation practice target are preserved.
+- Complete the round, then restart or choose the next topic.
+- If Listen is disabled, the browser has no Sinhala voice. Use the romanization for self-practice. No account setup is necessary to keep using the free version.
+- Microphone unavailable or denied: use typed input. A recognition failure is not a pronunciation grade.
+
+## Validation
 
 ```bash
+npm test
+npm run check
 npm run build
 ```
 
-If the build fails because dependencies are missing, run `npm install` first.
+The tests require no credentials or network. Real microphone quality and spoken Sinhala content still require owner/fluent-speaker review. See `docs/testing/README.md` for the manual checklist.
 
-## Environment Variables
+## Later: Provider Opt-In
 
-No environment variables are required yet.
-
-Future provider integration will likely need server-side variables such as:
+Only when you choose to enable paid services:
 
 ```bash
-AZURE_SPEECH_KEY=
-AZURE_SPEECH_REGION=
-OPENAI_API_KEY=
+cp .env.example .env.local
 ```
 
-Do not commit `.env` or `.env.local`; they are ignored by `.gitignore`.
+Set `ENABLE_PAID_SERVICES=true` and the provider's credentials. OpenAI needs `OPENAI_API_KEY` and optionally `OPENAI_MODEL`; Azure needs `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION`, with optional `AZURE_SPEECH_VOICE`. Restart the server. Both integrations remain independently optional. Keys are server-only and `.env.local` must not be committed.
 
-## Development Workflow
+To return to free practice, set `ENABLE_PAID_SERVICES=false`, restart, and reload the page.
 
-1. Read `SPECIFICATION.md` for product behavior.
-2. Read `docs/codex-context.md` for fast orientation.
-3. Update or add acceptance tests when changing a user story.
-4. Keep provider calls behind interfaces in `src/providers/`.
-5. Run `npm test` before handing off changes.
-6. Update `docs/roadmap/` when implementation scope changes.
+## Troubleshooting
 
-## Common Issues
+### Free practice instead of live tutor
 
-### `npm run dev` fails with missing Next.js
+Expected by default. Leave it this way for zero provider charges. The saved content supports the complete guided practice flow.
 
-Run:
+### An English sentence is not found
 
-```bash
-npm install
-```
+Search the phrase library for the idea and select an included sentence. Automatic lookup deliberately avoids partial keyword matching so that negations and unrelated sentences are not silently mistranslated.
 
-### Tests show an experimental TypeScript stripping warning
+### No microphone or no recognized speech
 
-This is expected with Node 23's built-in TypeScript execution. The tests still pass. If this becomes noisy later, the project can switch to a dedicated TypeScript test runner.
+Use Chrome, check site microphone permissions and the operating system input device, or type. Stop microphone cancels an attempt; starting another topic or switching mode also cancels it.
 
-### Microphone or AI conversation does not work
+### No Sinhala audio
 
-That is expected for the current foundation phase. The UI is scaffolded, while live speech and tutor provider integrations are planned for later roadmap phases.
+Playback requires a genuine installed Sinhala browser voice in free mode. No default English voice is used. Microphone recognition does not require playback. Auto-play is initially off.
+
+### Testing from a phone
+
+`npm run dev -- --hostname 0.0.0.0` exposes the app on your LAN. Browser microphone APIs generally require a secure context: localhost works on the computer, but a phone's plain HTTP LAN address may not. Trusted local HTTPS or a secure tunnel is deferred.

@@ -1,48 +1,54 @@
 # Codex Context
 
-This file is the fast handoff for new Codex instances.
-
 ## Product Direction
 
-Lanka Lingo teaches Sinhala through AI-guided spoken conversation. The first release is a mobile-first web/PWA, not native apps. The product is for adults, uses colloquial spoken Sinhala, includes romanized Sinhala prominently, and excludes reading/writing curriculum.
+Lanka Lingo is a local-first personal Sinhala speaking tool, not a general course platform. The owner fully understands spoken Sinhala but sometimes cannot retrieve sentences. The app should keep prompting a realistic casual conversation, let the owner switch to English when stuck, teach one natural phrase, and confirm that Chrome recognition heard the intended Sinhala phrase.
 
-## Key Product Decisions
+## Fixed Decisions
 
-- Mobile-first responsive web/PWA first.
-- Colloquial spoken Sinhala over formal literary Sinhala.
-- Romanized Sinhala is first-class because many speakers type Sinhala with Latin letters.
-- Raw learner audio storage is off by default and opt-in only.
-- Multiple Sinhala speakers must review colloquial phrasing before public release.
-- Older children may use the product, but adults are the target audience.
+- Runs locally and can be cloned from GitHub.
+- No authentication, database, subscriptions, admin tools, or required hosting.
+- Chrome-only prototype; do not spend effort on Safari, Firefox, or native packaging.
+- Neutral everyday colloquial Sinhala is the default, with casual phrasing only.
+- Topic choice supports a daily pick, presets, and arbitrary user-entered subjects.
+- Live tutor turns acknowledge the learner and ask follow-ups. Free mode uses three-question scripted rounds, then completion/restart/next-topic controls.
+- Suggested replies are retrieval scaffolds, not beginner comprehension aids.
+- Sinhala conversation and English rescue are equal first-class modes.
+- Sinhala script, romanization, and English meaning appear together.
+- Raw audio and conversation history are not stored by the app.
+- The pronunciation result is transcript similarity, never phoneme-level grading.
+- The optional AI key remains server-side. Paid services require `ENABLE_PAID_SERVICES=true` plus credentials; free practice is the default.
+- Free conversation and phrase lookup run in the browser without provider requests.
+- English help uses a searchable 38-phrase library and exact known aliases, not substring translation.
+- Explicit conversation steps and saved targets keep English help from disrupting a round.
+- Free playback uses only an installed Sinhala voice; otherwise disable audio and explain self-practice. Azure is available only after explicit opt-in. Never use a default English voice. Auto-play starts off.
 
-## Current Code Shape
+## Code Map
 
-- `SPECIFICATION.md`: source of truth for user stories and acceptance cases.
-- `app/`: Next.js PWA shell.
-- `src/domain/types.ts`: shared types.
-- `src/content/scenarios.ts`: initial scenario and phrase fixtures.
-- `src/services/conversationEngine.ts`: high-level turn orchestration.
-- `src/services/onboarding.ts`: learner placement and profile creation.
-- `src/services/privacy.ts`: audio-retention defaults and toggles.
-- `src/services/pronunciation.ts`: MVP pronunciation heuristics.
-- `src/services/suggestions.ts`: romanized suggested replies.
-- `src/services/contentReview.ts`: multiple-speaker review gate.
-- `tests/acceptance/`: tests that map to specification acceptance cases.
+- `SPECIFICATION.md`: product contract and acceptance cases.
+- `app/tutor-app.tsx`: complete interactive client.
+- `app/api/tutor/route.ts`: bounded server API and provider fallback.
+- `app/api/speech/route.ts`: bounded Sinhala MP3 route and safe configuration errors.
+- `src/providers/openaiTutor.ts`: optional structured OpenAI tutor.
+- `src/providers/azureSpeech.ts`: Azure Sri Lankan Sinhala synthesis adapter.
+- `src/services/localTutor.ts`: credential-free starter tutor.
+- `src/services/pronunciation.ts`: Sinhala-aware transcript comparison.
+- `src/content/phrases.ts`: starter English-rescue phrase catalog.
+- `src/content/topics.ts`: topic tracks and conversation prompts.
+- `tests/acceptance/`: offline product-behavior tests.
 
-## How To Work Here
+## Working Rules
 
-Run:
+1. Preserve useful operation without credentials.
+2. Do not add persistence or accounts unless the owner changes the product goal.
+3. Keep provider credentials out of client components and Git.
+4. Keep Sinhala claims humble and request fluent-speaker review for content changes.
+5. Run `npm test`, `npm run check`, and `npm run build` before handoff.
+6. Update the specification, architecture, local-development guide, roadmap, and tests when behavior changes.
 
-```bash
-npm test
-```
+## Highest-Value Next Work
 
-Do not add live Azure/OpenAI credentials to the repo. Provider integrations should be implemented behind interfaces in `src/providers/` and tested with fakes.
-
-## Next Best Tasks
-
-1. Add persistence abstractions for learner profiles, sessions, progress events, and scenario content.
-2. Add an OpenAI tutor provider interface that returns the structured tutor response contract from the spec.
-3. Add real Azure Speech integration behind `SpeechProvider`.
-4. Extend the PWA UI to call the domain services through server actions or API routes.
-5. Expand acceptance tests each time a user story is implemented or changed.
+1. Owner checks real Sinhala recognition and microphone permissions in Chrome, using free practice.
+2. Fluent speaker reviews existing Sinhala, romanization, and casual tone; automated tests do not establish language quality.
+3. Collect specific missing phrases or rough interactions from actual sessions before expanding the catalog.
+4. Defer OpenAI, Azure, dedicated speech recognition, and cloud deployment until the owner requests them. No paid account setup is needed for this phase.

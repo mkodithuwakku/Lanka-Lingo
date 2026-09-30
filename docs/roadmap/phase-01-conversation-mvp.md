@@ -1,35 +1,28 @@
-# Phase 01: Conversation MVP
+# Phase 01: Free Practice Validation
 
 ## Status
 
-Planned.
+Free-practice software is implemented. Automated checks and browser flow checks accompany the handoff. Real microphone quality and fluent-speaker review remain human validation tasks.
 
-## Scope
+## Completed Scope
 
-- Implement authenticated or anonymous learner sessions.
-- Build guided conversation UI with hold-to-speak controls.
-- Display English captions and romanized Sinhala suggestions.
-- Store progress events and session reviews.
-- Add privacy settings UI for audio retention and transcript handling.
-- Add internal scenario/content editor or structured seed-file workflow.
+- Zero provider spending by default, even if keys exist in the environment.
+- Five topics with three saved questions, completion, restart, and next topic.
+- Search/filter/select all 38 existing phrases, without inventing translations for arbitrary English.
+- Preserve the question and conversation target across English rescue.
+- Typed input and self-practice remain available without microphone recognition or installed Sinhala playback.
+- Microphone cancellation, start errors, empty results, and denied permissions recover gracefully.
+- Transcript similarity preserves Sinhala vowel marks and never claims phoneme grading.
 
-## User Stories Targeted
+## Owner Checks Remaining
 
-- FR-2: Real-Time Sinhala Conversation.
-- FR-3: Suggested Things To Say.
-- FR-4: English Live Captions.
-- FR-6: Conversation-Based Progression.
-- FR-8: Scenario Library.
-- FR-9: Conversation Review.
-- FR-11: Safety, Privacy, And Consent.
+1. In Chrome on the primary computer, speak a Sinhala reply and check the transcript.
+2. Practice the same phrase with the microphone; assess whether recognition is useful for your accent.
+3. Deny/re-enable microphone permission and verify typed practice remains usable.
+4. If Chrome has a Sinhala voice, judge normal/slow playback. No paid voice setup is required.
+5. Have a fluent colloquial Sinhala speaker review the existing content and romanization.
+6. Note specific missing phrases as text for a future content pass.
 
-## Testing Expectations
+## Deferred
 
-- Add browser-level tests once UI routes become interactive.
-- Keep domain acceptance tests fast and provider-free.
-- Add fake speech-provider tests for quiet audio, low confidence, and retry flows.
-
-## Risks
-
-- Browser microphone behavior may vary by platform.
-- Latency expectations must be validated with real provider calls.
+Open-ended model conversation, Azure account setup, dedicated speech-to-text evaluation, phone HTTPS setup, and new content beyond the existing phrase set.

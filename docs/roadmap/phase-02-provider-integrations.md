@@ -1,33 +1,27 @@
-# Phase 02: Provider Integrations
+# Phase 02: Optional Speech Upgrades
+
+Current decision: deferred. The owner is completing free practice before purchasing tokens or configuring cloud speech. Existing integrations require `ENABLE_PAID_SERVICES=true` and credentials; keys alone leave them disabled.
 
 ## Status
 
-Planned.
+Sinhala synthesis upgrade implemented; recognition upgrades remain deferred until real-device testing proves a need.
 
-## Scope
+## Possible Scope
 
-- Implement Azure Speech provider for Sinhala STT/TTS.
-- Implement OpenAI tutor provider for structured tutor turns.
-- Add provider fallback behavior and latency logging.
-- Add cost controls for token and audio usage.
-- Add opt-in storage for audio samples with deletion support.
+- Replace browser recognition with a server-side Sinhala speech-to-text provider.
+- Compare the implemented Azure `si-LK` voices with fluent-speaker samples and change the default if needed.
+- Stream partial transcripts and tutor audio to reduce pauses.
+- Evaluate word timestamps or audio similarity only if they produce honest, useful pronunciation feedback.
+- Add a provider abstraction after at least two realistic candidates have been tested.
 
-## User Stories Targeted
+## Guardrails
 
-- FR-2: Real-Time Sinhala Conversation.
-- FR-4: English Live Captions.
-- FR-5: Pronunciation Feedback.
-- FR-7: Adaptive Tutor Persona.
-- FR-11: Safety, Privacy, And Consent.
+- Do not add a paid speech provider based only on feature lists; test Sinhala samples first.
+- Keep provider keys server-side.
+- Preserve typed input and credential-free starter mode.
+- Keep raw audio ephemeral unless the owner explicitly opts into local storage.
+- Do not label confidence or transcript similarity as phoneme assessment.
 
-## Testing Expectations
+## Success Criteria
 
-- Contract-test provider adapters with mocked responses.
-- Keep live provider smoke tests separate from default `npm test`.
-- Never require provider credentials for the default test suite.
-
-## Risks
-
-- Sinhala STT quality may vary across accents and microphone setups.
-- Sinhala TTS voice quality must be validated with native speakers.
-- Pronunciation feedback must remain humble and confidence-aware.
+An integration should materially improve Sinhala recognition or playback on the owner's actual devices without making local setup fragile or privacy claims misleading.

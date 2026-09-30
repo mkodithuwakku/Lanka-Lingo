@@ -1,37 +1,30 @@
-# Phase 00: Foundation
+# Phase 00: Local Speaking Room
 
 ## Status
 
-In progress.
+Implemented in the local MVP.
 
-## Scope
+## Delivered
 
-- Create mobile-first PWA scaffold.
-- Create domain types and deterministic services for the core learning loop.
-- Add privacy-first audio retention defaults.
-- Add romanized Sinhala support to phrase and suggestion models.
-- Add multiple-speaker colloquial review gate.
-- Add acceptance-aligned test suite.
-- Add architecture, Codex context, roadmap, and testing documentation.
+- Responsive Sinhala conversation interface.
+- One-tap English rescue mode.
+- Browser microphone recognition for `si-LK` and English.
+- Sinhala playback and slow replay through Azure Speech or a genuine installed `si-LK` voice.
+- Active phrase practice with Sinhala-aware transcript comparison.
+- Credential-free phrase catalog and prompt loop.
+- Optional structured OpenAI tutor route with safe local fallback.
+- Optional server-side Azure Speech route that prevents English voices from reading Sinhala punctuation.
+- No accounts, database, analytics, or application-level audio storage.
+- Offline domain tests, TypeScript validation, and production build scripts.
+- Documentation rewritten around personal local use.
 
-## User Stories Covered
+## Exit Criteria
 
-- FR-1: Onboarding And Placement.
-- FR-3: Suggested Things To Say.
-- FR-5: Pronunciation Feedback.
-- FR-6: Conversation-Based Progression.
-- FR-9: Conversation Review.
-- FR-10: Vocabulary And Phrase Memory, partially through phrase fixtures and review.
-- FR-11: Safety, Privacy, And Consent.
-- FR-12: Admin Content Management, partially through content review gates.
+- Tests, TypeScript check, and production build pass.
+- Core path remains usable without an API key.
+- API credentials never reach client code.
+- UI states the limitation of recognition-based pronunciation feedback.
 
-## Acceptance Tests
+## Free Practice Completion Pass
 
-See `tests/acceptance/*.test.ts`.
-
-## Open Follow-Ups
-
-- Persist learner/session state.
-- Connect UI controls to the service layer.
-- Add live speech and LLM providers.
-- Expand scenario content beyond starter fixtures.
+Implemented default provider opt-out, browser-local guided rounds, the 38-phrase search library, exact phrase retrieval, explicit round completion/restart/next topic, preserved English-help context, optional installed-voice playback, recognition cancellation/error recovery, and Sinhala combining-mark preservation.

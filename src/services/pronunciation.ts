@@ -1,53 +1,58 @@
 import type { PronunciationFeedback, SpeechSignal } from "../domain/types.ts";
 
-const MIN_CONFIDENCE = 0.68;
-const MIN_VOLUME_DB = -45;
+const LOW_RECOGNITION_CONFIDENCE = 0.45;
 
 export function evaluatePronunciation(signal: SpeechSignal): PronunciationFeedback {
-  if (signal.volumeDb !== undefined && signal.volumeDb < MIN_VOLUME_DB) {
+  const expected = signal.expectedPhrase?.trim();
+
+  if (!expected || !signal.transcript.trim()) {
     return {
-      status: "note",
-      messageEnglish: "I could not hear that clearly. Try moving closer or speaking a little louder.",
-      targetPhrase: signal.expectedPhrase,
+      status: "ready",
+      score: 0,
+      messageEnglish: "I did not catch a complete phrase. Move closer to the microphone and try once more.",
+      targetPhrase: expected,
       recognizedPhrase: signal.transcript
     };
   }
 
-  if (!signal.expectedPhrase) {
-    return {
-      status: signal.confidence < MIN_CONFIDENCE ? "note" : "none",
-      messageEnglish:
-        signal.confidence < MIN_CONFIDENCE
-          ? "I may not have heard that clearly. Try that one more time, a little slower."
-          : "",
-      recognizedPhrase: signal.transcript
-    };
-  }
+  const similarity = phraseSimilarity(signal.transcript, expected);
+  const score = Math.round(similarity * 100);
 
-  const similarity = phraseSimilarity(signal.transcript, signal.expectedPhrase);
-
-  if (signal.confidence < MIN_CONFIDENCE && similarity < 0.72) {
+  if (signal.confidence < LOW_RECOGNITION_CONFIDENCE && similarity < 0.55) {
     return {
       status: "retry",
-      messageEnglish: "Let's try that one more time, a little slower. Listen first, then repeat.",
-      targetPhrase: signal.expectedPhrase,
+      score,
+      messageEnglish: "The microphone was unsure what it heard. Listen again, then repeat the phrase slowly.",
+      targetPhrase: expected,
       recognizedPhrase: signal.transcript
     };
   }
 
-  if (signal.confidence >= MIN_CONFIDENCE || similarity >= 0.72) {
+  if (similarity >= 0.88) {
     return {
-      status: "improvement",
-      messageEnglish: "That was clearer. Keep the same pace and continue.",
-      targetPhrase: signal.expectedPhrase,
+      status: "great",
+      score,
+      messageEnglish: "That matched the target clearly. Say it once more at a natural pace to lock it in.",
+      targetPhrase: expected,
+      recognizedPhrase: signal.transcript
+    };
+  }
+
+  if (similarity >= 0.65) {
+    return {
+      status: "close",
+      score,
+      messageEnglish: "Very close. Compare what the microphone heard with the target, then try the full phrase again.",
+      targetPhrase: expected,
       recognizedPhrase: signal.transcript
     };
   }
 
   return {
-    status: "none",
-    messageEnglish: "",
-    targetPhrase: signal.expectedPhrase,
+    status: "retry",
+    score,
+    messageEnglish: "The recognized words differ from the target. Compare the text and try again; recognition can make mistakes too.",
+    targetPhrase: expected,
     recognizedPhrase: signal.transcript
   };
 }
@@ -60,11 +65,15 @@ export function phraseSimilarity(a: string, b: string): number {
   }
 
   const distance = levenshtein(left, right);
-  return 1 - distance / Math.max(left.length, right.length);
+  return Math.max(0, 1 - distance / Math.max(left.length, right.length));
 }
 
 function normalize(value: string): string {
-  return value.toLowerCase().replace(/[^a-z]/g, "");
+  return value
+    .normalize("NFC")
+    .toLocaleLowerCase("si-LK")
+    .replace(/[^\p{L}\p{M}\p{N}]+/gu, "")
+    .trim();
 }
 
 function levenshtein(a: string, b: string): number {

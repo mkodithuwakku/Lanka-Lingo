@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Lanka Lingo",
-  description: "Conversation-first Sinhala learning with AI tutor support.",
+  description: "A Chrome-first Sinhala conversation companion for a comprehension-strong heritage learner.",
   manifest: "/manifest.json"
 };
 

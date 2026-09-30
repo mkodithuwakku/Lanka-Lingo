@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "types": [
@@ -31,7 +31,8 @@
     "app",
     "src",
     "tests",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

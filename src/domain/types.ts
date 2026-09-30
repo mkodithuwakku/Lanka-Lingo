@@ -1,102 +1,52 @@
-export type LearnerLevel = 0 | 1 | 2 | 3 | 4 | 5;
+export type PracticeMode = "conversation" | "english-help";
 
-export type LearnerBackground = "beginner" | "heritage" | "intermediate";
+export type MessageLanguage = "si" | "en";
 
-export type ConversationMode =
-  | "guided"
-  | "free-talk"
-  | "repeat-and-repair"
-  | "roleplay"
-  | "listening-first"
-  | "review";
-
-export type ProgressEventType =
-  | "objective_practiced"
-  | "phrase_reused"
-  | "comprehension_signal"
-  | "pronunciation_signal";
-
-export interface LearnerProfile {
+export interface ConversationMessage {
   id: string;
-  background: LearnerBackground;
-  goals: string[];
-  level: LearnerLevel;
-  supportLanguage: "en";
-  captionPreference: "on" | "tap-to-reveal" | "off";
-  correctionPreference: "gentle" | "balanced";
-  romanizationEnabled: boolean;
-  rawAudioRetention: boolean;
+  role: "learner" | "tutor";
+  language: MessageLanguage;
+  text: string;
+  romanized?: string;
+  english?: string;
+  notice?: string;
 }
 
-export interface OnboardingInput {
-  id: string;
-  background: LearnerBackground;
-  goals: string[];
-  placementTranscript?: string;
-  skipPlacement?: boolean;
+export interface TutorRequest {
+  mode: PracticeMode;
+  message: string;
+  topic: string;
+  startConversation?: boolean;
+  conversationStep?: number;
+  history: Array<Pick<ConversationMessage, "role" | "text" | "english">>;
 }
 
-export interface Phrase {
-  id: string;
-  romanizedSinhala: string;
+export interface TutorReply {
+  sinhala: string;
+  romanized: string;
   english: string;
-  sinhalaScript?: string;
-  level: LearnerLevel;
-  tags: string[];
-}
-
-export interface Scenario {
-  id: string;
-  title: string;
-  level: LearnerLevel;
-  mode: ConversationMode;
-  objective: string;
-  setting: string;
-  targetPhrases: Phrase[];
-  culturalNotes: string[];
-  releaseStatus: "draft" | "review" | "release-ready" | "published";
-  reviewerApprovals: string[];
-}
-
-export interface SuggestedReply {
-  english: string;
-  romanizedSinhala: string;
-  sinhalaScript?: string;
-  difficulty: "current" | "stretch";
+  coaching: string;
+  suggestedReplies: Array<{
+    sinhala: string;
+    romanized: string;
+    english: string;
+  }>;
+  expectedPhrase: string;
+  source: "local" | "openai";
+  notice?: string;
+  localProgress?: { question: number; total: number; complete: boolean };
 }
 
 export interface SpeechSignal {
   transcript: string;
   confidence: number;
-  volumeDb?: number;
   expectedPhrase?: string;
 }
 
 export interface PronunciationFeedback {
-  status: "none" | "retry" | "improvement" | "note";
+  status: "ready" | "retry" | "close" | "great";
+  score: number;
   messageEnglish: string;
   targetPhrase?: string;
-  recognizedPhrase?: string;
-}
-
-export interface ProgressEvent {
-  type: ProgressEventType;
-  value: string;
-}
-
-export interface TutorTurn {
-  tutorSinhala: string;
-  romanizedSinhala: string;
-  englishCaption: string;
-  suggestedReplies: SuggestedReply[];
-  pronunciationFeedback: PronunciationFeedback;
-  progressEvents: ProgressEvent[];
-}
-
-export interface ConversationSession {
-  id: string;
-  scenarioId: string;
-  learnerId: string;
-  completedObjectives: string[];
-  turns: TutorTurn[];
+  recognizedPhrase: string;
 }

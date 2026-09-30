@@ -2,6 +2,10 @@ node_modules/
 .next/
 dist/
 coverage/
+*.tsbuildinfo
 .env
 .env.local
 *.log
+
+# macOS metadata
+.DS_Store
