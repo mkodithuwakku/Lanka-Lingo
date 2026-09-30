@@ -6,16 +6,28 @@ A personal Sinhala speaking companion for heritage learners who understand the l
 
 ## Screenshots / demo
 
-Screenshots are not yet included. Capture these working flows and save the images under `docs/screenshots/`:
+### Guided conversation
 
-| Suggested file | What to show |
-| --- | --- |
-| `guided-conversation.png` | Food topic after one answer: question progress, transcript, suggested replies, and the focused phrase with all three text representations. |
-| `english-help.png` | English help filtered to Food, with search results and a selected phrase visible in the conversation. |
-| `phrase-practice.png` | A real microphone attempt showing the recognized Sinhala and transcript-match feedback. Do not present a simulated score as a real result. |
-| `mobile-conversation.png` | The same guided workflow at a narrow mobile viewport, including the composer. |
+A Food-topic round after one answer, with the current practice phrase, Sinhala transcript, romanization, English meanings, and suggested replies.
 
-Until images are added, the [local walkthrough](#running-the-project) provides a reproducible demo. The [existing verification record](docs/testing/free-practice-verification.md) describes prior desktop/mobile and simulated speech checks, including what they did not establish.
+![Lanka Lingo guided conversation showing question two of three and the focused Sinhala phrase](docs/screenshots/guided-conversation.png)
+
+### English phrase help
+
+Search the included phrases, filter by topic, and select a sentence to practice before returning to the conversation.
+
+![English help filtered to Food and searched for cook, with the selected phrase in the practice panel and transcript](docs/screenshots/english-help.png)
+
+<details>
+<summary>See the mobile layout</summary>
+
+The same Food-topic workflow at a 390-pixel viewport, with the practice controls and conversation stacked vertically.
+
+<img src="docs/screenshots/mobile-conversation.png" alt="Mobile layout showing the Food topic, focused phrase, first guided question, suggested replies, and message composer" width="390" />
+
+</details>
+
+These screenshots show the running app in free practice mode. Playback is unavailable in the capture browser because no Sinhala voice is installed. Follow the [local walkthrough](#running-the-project) to try it yourself.
 
 ## Problem and workflow
 
